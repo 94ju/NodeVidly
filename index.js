@@ -5,6 +5,9 @@ const app = express();
 const logger=require('./logger');
 const authenticate=require('./authenticate');
 const morgan=require('morgan')
+const config=require('config')
+const startupDebuger=require('debug')('app:startup');
+const dbDebuger=require('debug')('app:db');
 
 app.use(express.json());
 app.use(logger);
@@ -14,11 +17,16 @@ app.use(morgan('tiny'))
 
 console.log(`Node_ENV:${process.env.Node_ENV}`)
 
+console.log('Application name:'+config.get('name'))
+// console.log('Mail server:'+config.get('mail.host'))
+// console.log('Mail server:'+config.get('mail.password'))
 
 if(app.get('env')==='development'){
   console.log(`app:${app.get('env')}`)
-  console.log('Morgan enabled')
+  //console.log('Morgan enabled')
+  startupDebuger('Morgan Enabled')
 }
+dbDebuger('dbConncted...')
 
 const genres = [
   { id: 1, name: 'Action' },  
